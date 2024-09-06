@@ -2,11 +2,14 @@ from flask import Flask, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
-
+import os
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = 'ba79b37d00047525a5e833980f864e91'
-app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///projeto.db'
+if os.getenv('DATABASE_URL'):
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
+else:
+    app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///projeto.db'
 
 database = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
